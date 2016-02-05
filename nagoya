@@ -1,0 +1,61 @@
+#!/usr/bin/env php
+<?php
+require_once __DIR__ . '/vendor/autoload.php';
+
+use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Console\Helper\TableSeparator;
+use Symfony\Component\Console\Helper\QuestionHelper;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
+use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\Question;
+
+$config = require_once __DIR__ . '/config.php';
+
+$console = new Application();
+
+$console
+    ->register('party')
+    ->setDescription('Calculate amounts of pizzas and drinks')
+    ->setCode(function (InputInterface $input, OutputInterface $output) use ($config) {
+
+        $question = new QuestionHelper();
+        $table = new Table($output);
+
+        $headcount = $question->ask($input, $output, new Question('How many people? : ', false));
+        $beer = $question->ask($input, $output, new Question('How many people will drink beer? : ', false));
+        $nonAlcohol = $question->ask($input, $output, new Question('How many people will drink non-alcohol? : ', false));
+
+        $num = [
+            'pizza' => ceil($headcount * $config['num_per_head']['pizza']),
+            'beer' => ceil($beer * $config['num_per_head']['alcohol']),
+            'other_alcohol' => ceil(($headcount - $beer - $nonAlcohol) * $config['num_per_head']['alcohol']),
+            'non_alcohol' => ceil($nonAlcohol * $config['num_per_head']['non_alcohol']),
+        ];
+
+        $price = [
+            'pizza' => $num['pizza'] * $config['unit_price']['pizza'],
+            'beer' => $num['beer'] * $config['unit_price']['alcohol'],
+            'other_alcohol' => $num['other_alcohol'] * $config['unit_price']['alcohol'],
+            'non_alcohol' => $num['non_alcohol'] * $config['unit_price']['non_alcohol'],
+        ];
+
+        $table
+            ->setHeaders(['', 'Num', 'Price'])
+            ->setRows([
+                ['Pizza (L)', $num['pizza'], $price['pizza']],
+                ['Cans of beer', $num['beer'], $price['beer']],
+                ['Cans of other alcohol', $num['other_alcohol'], $price['other_alcohol']],
+                ['Bottles of non-alcohol (1.5L)', $num['non_alcohol'], $price['non_alcohol']],
+                new TableSeparator(),
+                ['Total', '-', $totalPrice = array_sum($price)],
+                ['Average', '-', ceil($totalPrice / $headcount)],
+            ])
+            ->render()
+        ;
+    })
+;
+
+$console->run();
