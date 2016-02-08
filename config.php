@@ -5,9 +5,10 @@ return [
         'alcohol' => 2.5,
         'non_alcohol' => 0.6,
     ],
+    // Mexican pesos
     'unit_price' => [
-        'pizza' => 3000,
-        'alcohol' => 230,
-        'non_alcohol' => 200,
+        'pizza' => 150,
+        'alcohol' => 100,
+        'non_alcohol' => 50,
     ],
 ];
