@@ -12,18 +12,34 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 
-$config = require_once __DIR__ . '/config.php';
-
 $console = new Application();
 
 $console
     ->register('party')
     ->setDescription('Calculate amounts of pizzas and drinks')
-    ->setCode(function (InputInterface $input, OutputInterface $output) use ($config) {
+    ->setCode(function (InputInterface $input, OutputInterface $output) {
 
         $question = new QuestionHelper();
         $table = new Table($output);
-
+        
+        $unit_price = strtolower($question->ask($input, $output, new Question('Where do you live? :', 'jp')));
+        
+        switch($unit_price)
+        {
+            case 'mexico':
+            case 'mx':
+                $file = 'mx.php';
+            case 'japan':
+            case 'jp':
+                $file = 'jp.php';
+                break;
+            default:
+                throw new \RuntimeException("I don't have that unit price.");
+                break;
+        }
+        
+        $config = require_once __DIR__ .$file;
+        
         $headcount = $question->ask($input, $output, new Question('How many people? : ', false));
         $beer = $question->ask($input, $output, new Question('How many people will drink beer? : ', false));
         $nonAlcohol = $question->ask($input, $output, new Question('How many people will drink non-alcohol? : ', false));
