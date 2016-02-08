@@ -22,13 +22,14 @@ $console
         $question = new QuestionHelper();
         $table = new Table($output);
         
-        $unit_price = strtolower($question->ask($input, $output, new Question('Where do you live? :', 'jp')));
+        $unit_price = strtolower($question->ask($input, $output, new Question('Where do you live? [jp]: ', 'jp')));
         
         switch($unit_price)
         {
             case 'mexico':
             case 'mx':
                 $file = 'mx.php';
+                break;
             case 'japan':
             case 'jp':
                 $file = 'jp.php';
@@ -38,8 +39,8 @@ $console
                 break;
         }
         
-        $config = require_once __DIR__ .$file;
-        
+        $config = require_once __DIR__.'/units/'.$file;
+                
         $headcount = $question->ask($input, $output, new Question('How many people? : ', false));
         $beer = $question->ask($input, $output, new Question('How many people will drink beer? : ', false));
         $nonAlcohol = $question->ask($input, $output, new Question('How many people will drink non-alcohol? : ', false));
