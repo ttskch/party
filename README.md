@@ -7,6 +7,7 @@ Calculate amounts of pizzas and drinks.
 ```bash
 $ git clone git@github.com:qckanemoto/nagoyaphp-party.git
 $ cd nagoyaphp-party
+$ cp config/config.php.placeholder config/config.php # and tailor config.php if you need
 $ composer install
 $ ln -s $(pwd)/nagoya /usr/local/bin/nagoya
 ```
