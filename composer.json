@@ -1,5 +1,10 @@
 {
     "require": {
         "symfony/console": "^3.0"
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "cp ./config/config.php{.placeholder,}"
+        ]
     }
 }
