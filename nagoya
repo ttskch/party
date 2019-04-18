@@ -25,21 +25,39 @@ $console
         $table = new Table($output);
 
         $headcount = $question->ask($input, $output, new Question('How many people? : ', false));
-        $beer = $question->ask($input, $output, new Question('How many people will drink beer? : ', false));
-        $nonAlcohol = $question->ask($input, $output, new Question('How many people will drink non-alcohol? : ', false));
+        $budgetPerPerson = $question->ask($input, $output, new Question('How much is budget per person? : ', false));
+        $budget = $headcount * $budgetPerPerson;
+
+        $drinksNumForOnePizza = 1 / $config['pizza_for_one_drink'];
+
+        $rates = [
+            'beer' => $config['distribution_rate']['beer'] / $denominator = array_sum($config['distribution_rate']),
+            'other_alcohol' => $config['distribution_rate']['other_alcohol'] / $denominator,
+            'non_alcohol' => $config['distribution_rate']['non_alcohol'] / $denominator,
+        ];
+
+        $averagePriceOfOneDrink = array_sum([
+            $config['unit_price']['beer'] * $rates['beer'],
+            $config['unit_price']['other_alcohol'] * $rates['other_alcohol'],
+            ($config['unit_price']['non_alcohol'] / $config['people_for_one_non_alcohol']) * $rates['non_alcohol'],
+        ]);
+
+        $drinksPriceForOnePizza = $drinksNumForOnePizza * $averagePriceOfOneDrink;
+
+        $drinksAndOnePizzaTotalPrice = $drinksPriceForOnePizza + $config['unit_price']['pizza'];
 
         $num = [
-            'pizza' => ceil($headcount * $config['num_per_head']['pizza']),
-            'beer' => ceil($beer * $config['num_per_head']['alcohol']),
-            'other_alcohol' => ceil(($headcount - $beer - $nonAlcohol) * $config['num_per_head']['alcohol']),
-            'non_alcohol' => ceil($nonAlcohol * $config['num_per_head']['non_alcohol']),
+            'pizza' => floor($pizzaNum = $budget / $drinksAndOnePizzaTotalPrice),
+            'beer' => ceil(($drinksNum = $pizzaNum * $drinksNumForOnePizza) * $rates['beer']),
+            'other_alcohol' => ceil($drinksNum * $rates['other_alcohol']),
+            'non_alcohol' => ceil($drinksNum * $rates['non_alcohol'] / $config['people_for_one_non_alcohol']),
         ];
 
         $price = [
-            'pizza' => $num['pizza'] * $config['unit_price']['pizza'],
-            'beer' => $num['beer'] * $config['unit_price']['alcohol'],
-            'other_alcohol' => $num['other_alcohol'] * $config['unit_price']['alcohol'],
-            'non_alcohol' => $num['non_alcohol'] * $config['unit_price']['non_alcohol'],
+            'pizza' => ceil($num['pizza'] * $config['unit_price']['pizza']),
+            'beer' => ceil($num['beer'] * $config['unit_price']['beer']),
+            'other_alcohol' => ceil($num['other_alcohol'] * $config['unit_price']['other_alcohol']),
+            'non_alcohol' => ceil($num['non_alcohol'] * $config['unit_price']['non_alcohol']),
         ];
 
         $table

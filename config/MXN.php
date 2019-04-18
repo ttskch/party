@@ -1,6 +1,7 @@
 <?php
 return $unitPrices = [
     'pizza' => 150,
-    'alcohol' => 100,
+    'beer' => 100,
+    'other_alcohol' => 100,
     'non_alcohol' => 50,
 ];
