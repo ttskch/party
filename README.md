@@ -7,7 +7,6 @@ Calculate amounts of pizzas and drinks.
 ```bash
 $ git clone git@github.com:ttskch/nagoyaphp-party.git
 $ cd nagoyaphp-party
-$ cp config/config.php.placeholder config/config.php # and tailor config.php if you need
 $ composer install
 $ ln -s $(pwd)/nagoya /usr/local/bin/nagoya
 ```
@@ -16,18 +15,17 @@ $ ln -s $(pwd)/nagoya /usr/local/bin/nagoya
 
 ```bash
 $ nagoya party
-How many people? : 9
-How many people will drink beer? : 6
-How many people will drink non-alcohol? : 2
+How many people? : 15
+How much is budget per person? : 2000
 +-------------------------------+-----+-------+
 |                               | Num | Price |
 +-------------------------------+-----+-------+
-| Pizza (L)                     | 4   | 12000 |
-| Cans of beer                  | 15  | 3450  |
-| Cans of other alcohol         | 3   | 690   |
+| Pizza (L)                     | 8   | 24000 |
+| Cans of beer                  | 17  | 3910  |
+| Cans of other alcohol         | 9   | 1800  |
 | Bottles of non-alcohol (1.5L) | 2   | 400   |
 +-------------------------------+-----+-------+
-| Total                         | -   | 16540 |
-| Average                       | -   | 1838  |
+| Total                         | -   | 30110 |
+| Average                       | -   | 2008  |
 +-------------------------------+-----+-------+
 ```
