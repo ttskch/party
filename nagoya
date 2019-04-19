@@ -16,7 +16,7 @@ $config = require_once __DIR__ . '/config/config.php';
 
 $console = new Application();
 
-$console
+$command = $console
     ->register('party')
     ->setDescription('Calculate amounts of pizzas and drinks')
     ->setCode(function (InputInterface $input, OutputInterface $output) use ($config) {
@@ -76,4 +76,5 @@ $console
     })
 ;
 
+$console->setDefaultCommand($command->getName());
 $console->run();

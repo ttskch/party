@@ -14,7 +14,7 @@ $ ln -s $(pwd)/nagoya /usr/local/bin/nagoya
 ## Usage
 
 ```bash
-$ nagoya party
+$ nagoya
 How many people? : 15
 How much is budget per person? : 2000
 +-------------------------------+-----+-------+
