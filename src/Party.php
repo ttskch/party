@@ -5,6 +5,7 @@ namespace Ttskch\Party;
 
 use Symfony\Component\Console\Application;
 use Ttskch\Party\Command\CalcCommand;
+use Ttskch\Party\Service\Config;
 
 class Party
 {
@@ -12,7 +13,7 @@ class Party
     {
         $console = new Application();
         $console->setName('party');
-        $console->add($calc = new CalcCommand());
+        $console->add($calc = new CalcCommand(new Config()));
         $console->setDefaultCommand($calc->getName());
         $console->run();
     }
