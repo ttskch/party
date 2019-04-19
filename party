@@ -12,6 +12,8 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 
+const PIZZA_PIECES = 8;
+
 $config = require_once __DIR__ . '/config/config.php';
 
 $console = new Application();
@@ -22,13 +24,12 @@ $command = $console
     ->setCode(function (InputInterface $input, OutputInterface $output) use ($config) {
 
         $question = new QuestionHelper();
-        $table = new Table($output);
 
         $headcount = $question->ask($input, $output, new Question('How many people? : ', false));
         $budgetPerPerson = $question->ask($input, $output, new Question('How much is budget per person? : ', false));
         $budget = $headcount * $budgetPerPerson;
 
-        $drinksNumForOnePizza = 1 / $config['pizza_for_one_drink'];
+        $drinksNumForOnePizza = 1 / ($config['pizza_pieces_for_one_drink'] / PIZZA_PIECES);
 
         $rates = [
             'beer' => $config['distribution_rate']['beer'] / $denominator = array_sum($config['distribution_rate']),
@@ -60,8 +61,8 @@ $command = $console
             'non_alcohol' => ceil($num['non_alcohol'] * $config['unit_price']['non_alcohol']),
         ];
 
-        $table
-            ->setHeaders(['', 'Num', 'Price'])
+        (new Table($output))
+            ->setHeaders(['What you have to buy', 'Num', 'Price'])
             ->setRows([
                 ['Pizza (L)', $num['pizza'], $price['pizza']],
                 ['Cans of beer', $num['beer'], $price['beer']],
@@ -70,6 +71,15 @@ $command = $console
                 new TableSeparator(),
                 ['Total', '-', $totalPrice = array_sum($price)],
                 ['Average', '-', ceil($totalPrice / $headcount)],
+            ])
+            ->render()
+        ;
+
+        (new Table($output))
+            ->setHeaders(['Amounts per person', 'Num'])
+            ->setRows([
+                ['Pizza (pieces)', round($num['pizza'] * PIZZA_PIECES / $headcount, 1)],
+                ['Drink (cans/cups)', round(($num['beer'] + $num['other_alcohol'] + $num['non_alcohol'] * $config['people_for_one_non_alcohol']) / $headcount, 1)],
             ])
             ->render()
         ;

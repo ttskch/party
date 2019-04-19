@@ -18,7 +18,7 @@ $ party
 How many people? : 15
 How much is budget per person? : 2000
 +-------------------------------+-----+-------+
-|                               | Num | Price |
+| What you have to buy          | Num | Price |
 +-------------------------------+-----+-------+
 | Pizza (L)                     | 8   | 24000 |
 | Cans of beer                  | 17  | 3910  |
@@ -28,4 +28,10 @@ How much is budget per person? : 2000
 | Total                         | -   | 30110 |
 | Average                       | -   | 2008  |
 +-------------------------------+-----+-------+
++--------------------+-----+
+| Amounts per person | Num |
++--------------------+-----+
+| Pizza (pieces)     | 4.3 |
+| Drink (cans/cups)  | 2.3 |
++--------------------+-----+
 ```
