@@ -1,20 +1,20 @@
-# nagoyaphp-party
+# party
 
-Calculate amounts of pizzas and drinks.
+CLI command to calculate amounts of pizzas and drinks for a party.
 
 ## Installation
 
 ```bash
-$ git clone git@github.com:ttskch/nagoyaphp-party.git
-$ cd nagoyaphp-party
+$ git clone git@github.com:ttskch/party.git
+$ cd party
 $ composer install
-$ ln -s $(pwd)/nagoya /usr/local/bin/nagoya
+$ ln -s $(pwd)/party /usr/local/bin/party
 ```
 
 ## Usage
 
 ```bash
-$ nagoya
+$ party
 How many people? : 15
 How much is budget per person? : 2000
 +-------------------------------+-----+-------+
