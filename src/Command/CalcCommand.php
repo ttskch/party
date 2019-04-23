@@ -10,25 +10,24 @@ use Symfony\Component\Console\Helper\TableSeparator;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
-use Ttskch\Party\Service\Config;
+use Ttskch\Party\Service\Calculator;
+use Ttskch\Party\Service\Result;
 
 class CalcCommand extends Command
 {
-    const PIZZA_PIECES = 8;
-
     /**
-     * @var Config
+     * @var Calculator
      */
-    private $config;
+    private $calculator;
 
     /**
      * @var QuestionHelper
      */
     private $question;
 
-    public function __construct(Config $config)
+    public function __construct(Calculator $calculator)
     {
-        $this->config = $config;
+        $this->calculator = $calculator;
         $this->question = new QuestionHelper();
 
         parent::__construct();
@@ -44,52 +43,25 @@ class CalcCommand extends Command
 
     public function execute(InputInterface $input, OutputInterface $output): void
     {
-        $headcount = $this->question->ask($input, $output, new Question('How many people? : ', false));
-        $budgetPerPerson = $this->question->ask($input, $output, new Question('How much is budget per person? : ', false));
+        $headcount = (int)$this->question->ask($input, $output, new Question('How many people? : ', false));
+        $budgetPerPerson = (int)$this->question->ask($input, $output, new Question('How much is budget per person? : ', false));
         $budget = $headcount * $budgetPerPerson;
 
-        $drinksNumForOnePizza = 1 / ($this->config->getConfig('pizza_pieces_for_one_drink') / self::PIZZA_PIECES);
-
-        $rates = [
-            'beer' => $this->config->getConfig('distribution_rate.beer') / $denominator = array_sum($this->config->getConfig('distribution_rate')),
-            'other_alcohol' => $this->config->getConfig('distribution_rate.other_alcohol') / $denominator,
-            'non_alcohol' => $this->config->getConfig('distribution_rate.non_alcohol') / $denominator,
-        ];
-
-        $averagePriceOfOneDrink = array_sum([
-            $this->config->getUnitPrice('beer') * $rates['beer'],
-            $this->config->getUnitPrice('other_alcohol') * $rates['other_alcohol'],
-            ($this->config->getUnitPrice('non_alcohol') / $this->config->getConfig('people_for_one_non_alcohol')) * $rates['non_alcohol'],
-        ]);
-
-        $drinksPriceForOnePizza = $drinksNumForOnePizza * $averagePriceOfOneDrink;
-
-        $drinksAndOnePizzaTotalPrice = $drinksPriceForOnePizza + $this->config->getUnitPrice('pizza');
-
-        $num = [
-            'pizza' => floor($pizzaNum = $budget / $drinksAndOnePizzaTotalPrice),
-            'beer' => ceil(($drinksNum = $pizzaNum * $drinksNumForOnePizza) * $rates['beer']),
-            'other_alcohol' => ceil($drinksNum * $rates['other_alcohol']),
-            'non_alcohol' => ceil($drinksNum * $rates['non_alcohol'] / $this->config->getConfig('people_for_one_non_alcohol')),
-        ];
-
-        $price = [
-            'pizza' => ceil($num['pizza'] * $this->config->getUnitPrice('pizza')),
-            'beer' => ceil($num['beer'] * $this->config->getUnitPrice('beer')),
-            'other_alcohol' => ceil($num['other_alcohol'] * $this->config->getUnitPrice('other_alcohol')),
-            'non_alcohol' => ceil($num['non_alcohol'] * $this->config->getUnitPrice('non_alcohol')),
-        ];
+        /**
+         * @var Result $result
+         */
+        $result = $this->calculator->calculate($headcount, $budget);
 
         (new Table($output))
             ->setHeaders(['What you have to buy', 'Num', 'Price'])
             ->setRows([
-                ['Pizza (L)', $num['pizza'], $price['pizza']],
-                ['Cans of beer', $num['beer'], $price['beer']],
-                ['Cans of other alcohol', $num['other_alcohol'], $price['other_alcohol']],
-                ['Bottles of non-alcohol (1.5L)', $num['non_alcohol'], $price['non_alcohol']],
+                ['Pizza (L)', $result->totalPizzaNum, $result->totalPizzaPrice],
+                ['Cans of beer', $result->totalBeerNum, $result->totalBeerPrice],
+                ['Cans of other alcohol', $result->totalOtherAlcoholNum, $result->totalOtherAlcoholPrice],
+                ['Bottles of non-alcohol (1.5L)', $result->totalNonAlcoholNum, $result->totalNonAlcoholPrice],
                 new TableSeparator(),
-                ['Total', '-', $totalPrice = array_sum($price)],
-                ['Average', '-', ceil($totalPrice / $headcount)],
+                ['Total', '-', $totalPrice = $result->totalPrice],
+                ['Average', '-', ceil($result->totalPrice / $headcount)],
             ])
             ->render()
         ;
@@ -97,8 +69,8 @@ class CalcCommand extends Command
         (new Table($output))
             ->setHeaders(['Amounts per person', 'Num'])
             ->setRows([
-                ['Pizza (pieces)', round($num['pizza'] * self::PIZZA_PIECES / $headcount, 1)],
-                ['Drink (cans/cups)', round(($num['beer'] + $num['other_alcohol'] + $num['non_alcohol'] * $this->config->getConfig('people_for_one_non_alcohol')) / $headcount, 1)],
+                ['Pizza (pieces)', round($result->pizzaPiecesPerPerson, 1)],
+                ['Drink (cans/cups)', round($result->drinksNumPerPerson, 1)],
             ])
             ->render()
         ;

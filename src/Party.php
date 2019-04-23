@@ -5,6 +5,7 @@ namespace Ttskch\Party;
 
 use Symfony\Component\Console\Application;
 use Ttskch\Party\Command\CalcCommand;
+use Ttskch\Party\Service\Calculator;
 use Ttskch\Party\Service\Config;
 
 class Party
@@ -13,7 +14,8 @@ class Party
     {
         $console = new Application();
         $console->setName('party');
-        $console->add($calc = new CalcCommand(new Config()));
+//        $console->add($calc = new CalcCommand(new Calculator(new Config())));
+        $console->add($calc = new CalcCommand(new Calculator(new Config(__DIR__.'/../tests/fixture/config.test.yaml'))));
         $console->setDefaultCommand($calc->getName());
         $console->run();
     }

@@ -4,8 +4,8 @@ distribution_rate:
   other_alcohol: 5
   non_alcohol: 5
 
-# how many people can share 1 bottle of non alcohol
-people_for_one_non_alcohol: 4.3 # 1500 / 350 = 4.2857...
+# how many cups 1 bottle of non alcohol can be divided to
+cups_for_one_non_alcohol: 4.3 # 1500 / 350 = 4.2857...
 
 # how many pieces of L size pizza for 1 can/cup of drink
 pizza_pieces_for_one_drink: 2
