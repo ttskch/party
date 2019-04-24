@@ -5,6 +5,9 @@ namespace Ttskch\Party\Service;
 
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * Calculate only from config information (without user input (headcount and budget))
+ */
 class Config
 {
     const DEFAULT_CONFIG_FILE_PATH_UNDER_HOME_DIR = '/.config/party/config.yaml';
@@ -40,40 +43,25 @@ class Config
 
     public function getCupsNumForOneNonAlcohol(): float
     {
-        return (float)$this->config['cups_for_one_non_alcohol'];
+        return $this->config['cups_for_one_non_alcohol'];
     }
 
-    public function getBeerPeopleRate(): float
+    public function getPurchaseRates(): array
     {
-        return $this->config['distribution_rate']['beer'] / array_sum($this->config['distribution_rate']);
+        $drinksNumForOnePizza = 1 / ($this->config['pizza_pieces_for_one_drink'] / self::PIZZA_PIECES);
+
+        $total = $this->config['distribution_rates']['beer'] + $this->config['distribution_rates']['other_alcohol'] + $this->config['distribution_rates']['non_alcohol'] / $this->config['cups_for_one_non_alcohol'];
+        $beerPurchaseRate = ($this->config['distribution_rates']['beer'] / $total) * $drinksNumForOnePizza;
+        $otherAlcoholPurchaseRate = ($this->config['distribution_rates']['other_alcohol'] / $total) * $drinksNumForOnePizza;
+        $nonAlcoholPurchaseRate = (($this->config['distribution_rates']['non_alcohol'] / $this->config['cups_for_one_non_alcohol']) / $total) * $drinksNumForOnePizza;
+
+        return [
+            'pizza' => 1,
+            'beer' => $beerPurchaseRate,
+            'other_alcohol' => $otherAlcoholPurchaseRate,
+            'non_alcohol' => $nonAlcoholPurchaseRate,
+        ];
     }
-
-    public function getOtherAlcoholPeopleRate(): float
-    {
-        return $this->config['distribution_rate']['other_alcohol'] / array_sum($this->config['distribution_rate']);
-    }
-
-    public function getNonAlcoholPeopleRate(): float
-    {
-        return $this->config['distribution_rate']['non_alcohol'] / array_sum($this->config['distribution_rate']);
-    }
-
-    public function getDrinksNumForOnePizza(): float
-    {
-        return 1 / ($this->config['pizza_pieces_for_one_drink'] / self::PIZZA_PIECES);
-    }
-
-    public function getOnePizzaAndDrinksTotalPriceForOnePizza(): float
-    {
-        $averagePriceOfOneDrink = array_sum([
-            $this->unitPrices['beer'] * $this->getBeerPeopleRate(),
-            $this->unitPrices['other_alcohol'] * $this->getOtherAlcoholPeopleRate(),
-            ($this->unitPrices['non_alcohol'] / $this->getCupsNumForOneNonAlcohol()) * $this->getNonAlcoholPeopleRate(),
-        ]);
-
-        return $this->getDrinksNumForOnePizza() * $averagePriceOfOneDrink + $this->unitPrices['pizza'];
-    }
-
 
     public static function createDefaultConfigFile(): void
     {

@@ -14,8 +14,7 @@ class Party
     {
         $console = new Application();
         $console->setName('party');
-//        $console->add($calc = new CalcCommand(new Calculator(new Config())));
-        $console->add($calc = new CalcCommand(new Calculator(new Config(__DIR__.'/../tests/fixture/config.test.yaml'))));
+        $console->add($calc = new CalcCommand(new Calculator(new Config())));
         $console->setDefaultCommand($calc->getName());
         $console->run();
     }

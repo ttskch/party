@@ -11,7 +11,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 use Ttskch\Party\Service\Calculator;
-use Ttskch\Party\Service\Result;
 
 class CalcCommand extends Command
 {
@@ -47,18 +46,15 @@ class CalcCommand extends Command
         $budgetPerPerson = (int)$this->question->ask($input, $output, new Question('How much is budget per person? : ', false));
         $budget = $headcount * $budgetPerPerson;
 
-        /**
-         * @var Result $result
-         */
-        $result = $this->calculator->calculate($headcount, $budget);
+        $result = $this->calculator->calculate($budget);
 
         (new Table($output))
             ->setHeaders(['What you have to buy', 'Num', 'Price'])
             ->setRows([
-                ['Pizza (L)', $result->totalPizzaNum, $result->totalPizzaPrice],
-                ['Cans of beer', $result->totalBeerNum, $result->totalBeerPrice],
-                ['Cans of other alcohol', $result->totalOtherAlcoholNum, $result->totalOtherAlcoholPrice],
-                ['Bottles of non-alcohol (1.5L)', $result->totalNonAlcoholNum, $result->totalNonAlcoholPrice],
+                ['Pizza (L)', $result->pizzaNum, $result->pizzaPrice],
+                ['Cans of beer', $result->beerNum, $result->beerPrice],
+                ['Cans of other alcohol', $result->otherAlcoholNum, $result->otherAlcoholPrice],
+                ['Bottles of non-alcohol (1.5L)', $result->nonAlcoholNum, $result->nonAlcoholPrice],
                 new TableSeparator(),
                 ['Total', '-', $totalPrice = $result->totalPrice],
                 ['Average', '-', ceil($result->totalPrice / $headcount)],
@@ -69,8 +65,8 @@ class CalcCommand extends Command
         (new Table($output))
             ->setHeaders(['Amounts per person', 'Num'])
             ->setRows([
-                ['Pizza (pieces)', round($result->pizzaPiecesPerPerson, 1)],
-                ['Drink (cans/cups)', round($result->drinksNumPerPerson, 1)],
+                ['Pizza (pieces)', round($this->calculator->getPizzaPiecesPerPerson($headcount), 1)],
+                ['Drink (cans/cups)', round($this->calculator->getDrinksNumPerPerson($headcount), 1)],
             ])
             ->render()
         ;

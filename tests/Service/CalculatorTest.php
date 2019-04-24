@@ -1,11 +1,10 @@
 <?php
 declare(strict_types=1);
 
-namespace Ttskch\Party\Config;
+namespace Ttskch\Party\Service;
 
 use PHPUnit\Framework\TestCase;
-use Ttskch\Party\Service\Calculator;
-use Ttskch\Party\Service\Config;
+use Ttskch\Party\Exception\LogicException;
 
 /**
  * @group Calculator
@@ -23,26 +22,42 @@ class CalculatorTest extends TestCase
     }
 
     /**
-     * @dataProvider dataProvider
+     * @dataProvider calculateDataProvider
      */
-    public function testCalculate($headcount, $budget, $totalPizzaNum, $totalBeerNum, $totalOtherAlcoholNum, $totalNonAlcoholNum, $pizzaPiecesPerPerson, $drinksNumPerPerson)
+    public function testCalculate($budget, $pizzaNum, $beerNum, $otherAlcoholNum, $nonAlcoholNum)
     {
-        $result = $this->SUT->calculate($headcount, $budget);
+        $result = $this->SUT->calculate($budget);
 
-        $this->assertEquals($totalPizzaNum, $result->totalPizzaNum);
-        $this->assertEquals($totalBeerNum, $result->totalBeerNum);
-        $this->assertEquals($totalOtherAlcoholNum, $result->totalOtherAlcoholNum);
-        $this->assertEquals($totalNonAlcoholNum, $result->totalNonAlcoholNum);
-        $this->assertEquals($pizzaPiecesPerPerson, round($result->pizzaPiecesPerPerson, 1));
-        $this->assertEquals($drinksNumPerPerson, round($result->drinksNumPerPerson, 1));
+        $this->assertEquals($pizzaNum, $result->pizzaNum);
+        $this->assertEquals($beerNum, $result->beerNum);
+        $this->assertEquals($otherAlcoholNum, $result->otherAlcoholNum);
+        $this->assertEquals($nonAlcoholNum, $result->nonAlcoholNum);
     }
 
-    public function dataProvider()
+    public function calculateDataProvider()
     {
         return [
-            [10, 10*1000, 2, 1, 3, 1, 1.6, 0.8],
-            [15, 15*2000, 8, 4, 10, 3, 4.3, 1.8],
-            [20, 20*3000, 17, 8, 22, 6, 6.8, 2.8],
+            [10000, 3, 5, 3, 1],
+            [30000, 8, 16, 8, 2],
+            [60000, 16, 32, 16, 4],
         ];
+    }
+
+    public function testGetPizzaPiecesPerPerson()
+    {
+        $this->expectException(LogicException::class);
+        $this->SUT->getPizzaPiecesPerPerson(10);
+
+        $this->SUT->calculate(10000);
+        $this->assertEquals(2.4, $this->SUT->getPizzaPiecesPerPerson(10));
+    }
+
+    public function testGetDrinksNumPerPerson()
+    {
+        $this->expectException(LogicException::class);
+        $this->SUT->getPizzaPiecesPerPerson(10);
+
+        $this->SUT->calculate(10000);
+        $this->assertEquals(1.23, $this->SUT->getPizzaPiecesPerPerson(10));
     }
 }

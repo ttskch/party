@@ -1,5 +1,5 @@
 # how people drink beer, other alcohol and non alcohol are distributed (total number is meaningless)
-distribution_rate:
+distribution_rates:
   beer: 10
   other_alcohol: 5
   non_alcohol: 5
@@ -8,7 +8,7 @@ distribution_rate:
 cups_for_one_non_alcohol: 4.3 # 1500 / 350 = 4.2857...
 
 # how many pieces of L size pizza for 1 can/cup of drink
-pizza_pieces_for_one_drink: 2
+pizza_pieces_for_one_drink: 2.5
 
 # JPY and MXN are supported (please add your currency to https://github.com/ttskch/party)
 currency: JPY
