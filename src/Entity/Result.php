@@ -26,22 +26,22 @@ class Result
     public $nonAlcoholNum;
 
     /**
-     * @var int
+     * @var float
      */
     public $pizzaPrice;
 
     /**
-     * @var int
+     * @var float
      */
     public $beerPrice;
 
     /**
-     * @var int
+     * @var float
      */
     public $otherAlcoholPrice;
 
     /**
-     * @var int
+     * @var float
      */
     public $nonAlcoholPrice;
 

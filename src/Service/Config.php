@@ -36,14 +36,14 @@ class Config
         $this->unitPrices = Yaml::parseFile(__DIR__ . "/../../config/unit_prices/{$this->config['currency']}.yaml");
     }
 
-    public function getUnitPrice(string $key): int
+    public function getUnitPrice(string $key): float
     {
-        return (int)$this->unitPrices[$key];
+        return (float)$this->unitPrices[$key];
     }
 
     public function getCupsNumForOneNonAlcohol(): float
     {
-        return $this->config['cups_for_one_non_alcohol'];
+        return (float)$this->config['cups_for_one_non_alcohol'];
     }
 
     public function getPurchaseRates(): array
