@@ -6,6 +6,15 @@ CLI command to calculate amounts of pizzas and drinks for a party.
 
 ## Installation
 
+### macOS
+
+```bash
+$ brew tap ttskch/party
+$ brew install party
+```
+
+### Other
+
 ```bash
 $ git clone git@github.com:ttskch/party.git
 $ cd party
