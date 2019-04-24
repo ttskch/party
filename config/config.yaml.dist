@@ -1,3 +1,5 @@
+version: 1.0.0
+
 # how people drink beer, other alcohol and non alcohol are distributed (total number is meaningless)
 distribution_rates:
   beer: 10
