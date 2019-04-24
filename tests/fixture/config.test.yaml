@@ -1,0 +1,10 @@
+distribution_rates:
+  beer: 10
+  other_alcohol: 5
+  non_alcohol: 5
+
+cups_for_one_non_alcohol: 4.3
+
+pizza_pieces_for_one_drink: 2.5
+
+currency: JPY

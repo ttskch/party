@@ -1,5 +1,7 @@
 # party
 
+[![Build Status](https://travis-ci.com/ttskch/party.svg?branch=master)](https://travis-ci.com/ttskch/party)
+
 CLI command to calculate amounts of pizzas and drinks for a party.
 
 ## Installation
@@ -21,17 +23,17 @@ How much is budget per person? : 2000
 | What you have to buy          | Num | Price |
 +-------------------------------+-----+-------+
 | Pizza (L)                     | 8   | 24000 |
-| Cans of beer                  | 17  | 3910  |
-| Cans of other alcohol         | 9   | 1800  |
+| Cans of beer                  | 16  | 3680  |
+| Cans of other alcohol         | 8   | 1600  |
 | Bottles of non-alcohol (1.5L) | 2   | 400   |
 +-------------------------------+-----+-------+
-| Total                         | -   | 30110 |
-| Average                       | -   | 2008  |
+| Total                         | -   | 29680 |
+| Average                       | -   | 1979  |
 +-------------------------------+-----+-------+
 +--------------------+-----+
 | Amounts per person | Num |
 +--------------------+-----+
 | Pizza (pieces)     | 4.3 |
-| Drink (cans/cups)  | 2.3 |
+| Drink (cans/cups)  | 2.2 |
 +--------------------+-----+
 ```
