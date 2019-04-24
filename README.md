@@ -10,7 +10,7 @@ CLI command to calculate amounts of pizzas and drinks for a party.
 $ git clone git@github.com:ttskch/party.git
 $ cd party
 $ composer install
-$ ln -s $(pwd)/party /usr/local/bin/party
+$ ln -s $(pwd)/bin/party /usr/local/bin/party
 ```
 
 ## Usage
