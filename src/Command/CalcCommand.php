@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Ttskch\Party\Command;
@@ -32,18 +33,17 @@ class CalcCommand extends Command
         parent::__construct();
     }
 
-    public function configure(): void
+    public function configure() : void
     {
         $this
             ->setName('calc')
-            ->setDescription('Calculate amounts of pizzas and drinks')
-        ;
+            ->setDescription('Calculate amounts of pizzas and drinks');
     }
 
-    public function execute(InputInterface $input, OutputInterface $output): void
+    public function execute(InputInterface $input, OutputInterface $output) : void
     {
-        $headcount = (int)$this->question->ask($input, $output, new Question('How many people? : ', false));
-        $budgetPerPerson = (int)$this->question->ask($input, $output, new Question('How much is budget per person? : ', false));
+        $headcount = (int) $this->question->ask($input, $output, new Question('How many people? : ', false));
+        $budgetPerPerson = (int) $this->question->ask($input, $output, new Question('How much is budget per person? : ', false));
         $budget = $headcount * $budgetPerPerson;
 
         $result = $this->calculator->calculate($budget);
@@ -59,8 +59,7 @@ class CalcCommand extends Command
                 ['Total', '-', $totalPrice = $result->getTotalPrice()],
                 ['Average', '-', ceil($result->getTotalPrice() / $headcount)],
             ])
-            ->render()
-        ;
+            ->render();
 
         (new Table($output))
             ->setHeaders(['Amounts per person', 'Num'])
@@ -68,7 +67,6 @@ class CalcCommand extends Command
                 ['Pizza (pieces)', round($this->calculator->getPizzaPiecesPerPerson($headcount), 1)],
                 ['Drink (cans/cups)', round($this->calculator->getDrinksNumPerPerson($headcount), 1)],
             ])
-            ->render()
-        ;
+            ->render();
     }
 }

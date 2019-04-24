@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Ttskch\Party;
@@ -10,7 +11,7 @@ use Ttskch\Party\Service\Config;
 
 class Party
 {
-    public function run()
+    public function run() : void
     {
         $console = new Application();
         $console->setName('party');

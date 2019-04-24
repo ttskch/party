@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Ttskch\Party\Service;
@@ -11,6 +12,7 @@ use Symfony\Component\Yaml\Yaml;
 class Config
 {
     const DEFAULT_CONFIG_FILE_PATH_UNDER_HOME_DIR = '/.config/party/config.yaml';
+
     const PIZZA_PIECES = 8;
 
     /**
@@ -28,7 +30,6 @@ class Config
      */
     private $unitPrices;
 
-
     public function __construct(string $configFilePath = null)
     {
         $this->configFilePath = $configFilePath ?: $_SERVER['HOME'] . self::DEFAULT_CONFIG_FILE_PATH_UNDER_HOME_DIR;
@@ -36,17 +37,17 @@ class Config
         $this->unitPrices = Yaml::parseFile(__DIR__ . "/../../config/unit_prices/{$this->config['currency']}.yaml");
     }
 
-    public function getUnitPrice(string $key): float
+    public function getUnitPrice(string $key) : float
     {
-        return (float)$this->unitPrices[$key];
+        return (float) $this->unitPrices[$key];
     }
 
-    public function getCupsNumForOneNonAlcohol(): float
+    public function getCupsNumForOneNonAlcohol() : float
     {
-        return (float)$this->config['cups_for_one_non_alcohol'];
+        return (float) $this->config['cups_for_one_non_alcohol'];
     }
 
-    public function getPurchaseRates(): array
+    public function getPurchaseRates() : array
     {
         $drinksNumForOnePizza = 1 / ($this->config['pizza_pieces_for_one_drink'] / self::PIZZA_PIECES);
 
@@ -63,7 +64,7 @@ class Config
         ];
     }
 
-    public static function createDefaultConfigFile(): void
+    public static function createDefaultConfigFile() : void
     {
         @mkdir(dirname($path = $_SERVER['HOME'] . self::DEFAULT_CONFIG_FILE_PATH_UNDER_HOME_DIR), 0644, true);
 

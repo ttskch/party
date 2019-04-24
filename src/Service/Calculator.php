@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Ttskch\Party\Service;
@@ -26,7 +27,7 @@ class Calculator
         $this->config = $config;
     }
 
-    public function calculate(int $budget): Result
+    public function calculate(int $budget) : Result
     {
         $result = new Result();
 
@@ -38,10 +39,10 @@ class Calculator
 
         $num = $budget / $totalPrice;
 
-        $result->pizzaNum = (int)round($rates['pizza'] * $num);
-        $result->beerNum = (int)round($rates['beer'] * $num);
-        $result->otherAlcoholNum = (int)round($rates['other_alcohol'] * $num);
-        $result->nonAlcoholNum = (int)round($rates['non_alcohol'] * $num);
+        $result->pizzaNum = (int) round($rates['pizza'] * $num);
+        $result->beerNum = (int) round($rates['beer'] * $num);
+        $result->otherAlcoholNum = (int) round($rates['other_alcohol'] * $num);
+        $result->nonAlcoholNum = (int) round($rates['non_alcohol'] * $num);
 
         $result->pizzaPrice = $this->config->getUnitPrice('pizza') * $result->pizzaNum;
         $result->beerPrice = $this->config->getUnitPrice('beer') * $result->beerNum;
@@ -51,23 +52,23 @@ class Calculator
         return $this->result = $result;
     }
 
-    public function getPizzaPiecesPerPerson(int $headcount): float
+    public function getPizzaPiecesPerPerson(int $headcount) : float
     {
         $this->ensureCalculated();
 
         return Config::PIZZA_PIECES * $this->result->pizzaNum / $headcount;
     }
 
-    public function getDrinksNumPerPerson(int $headcount): float
+    public function getDrinksNumPerPerson(int $headcount) : float
     {
         $this->ensureCalculated();
 
         return ($this->result->beerNum + $this->result->otherAlcoholNum + $this->result->nonAlcoholNum * $this->config->getCupsNumForOneNonAlcohol()) / $headcount;
     }
 
-    private function ensureCalculated()
+    private function ensureCalculated() : void
     {
-        if (!isset($this->result)) {
+        if (! isset($this->result)) {
             throw new LogicException('Not calculated yet.');
         }
     }

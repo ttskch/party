@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Ttskch\Party\Service;
@@ -16,7 +17,7 @@ class CalculatorTest extends TestCase
      */
     protected $SUT;
 
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $this->SUT = new Calculator(new Config(__DIR__ . '/../fixture/config.test.yaml'));
     }
@@ -24,14 +25,14 @@ class CalculatorTest extends TestCase
     /**
      * @dataProvider calculateDataProvider
      */
-    public function testCalculate($budget, $pizzaNum, $beerNum, $otherAlcoholNum, $nonAlcoholNum)
+    public function testCalculate($budget, $pizzaNum, $beerNum, $otherAlcoholNum, $nonAlcoholNum) : void
     {
         $result = $this->SUT->calculate($budget);
 
-        $this->assertEquals($pizzaNum, $result->pizzaNum);
-        $this->assertEquals($beerNum, $result->beerNum);
-        $this->assertEquals($otherAlcoholNum, $result->otherAlcoholNum);
-        $this->assertEquals($nonAlcoholNum, $result->nonAlcoholNum);
+        $this->assertSame($pizzaNum, $result->pizzaNum);
+        $this->assertSame($beerNum, $result->beerNum);
+        $this->assertSame($otherAlcoholNum, $result->otherAlcoholNum);
+        $this->assertSame($nonAlcoholNum, $result->nonAlcoholNum);
     }
 
     public function calculateDataProvider()
@@ -43,21 +44,21 @@ class CalculatorTest extends TestCase
         ];
     }
 
-    public function testGetPizzaPiecesPerPerson()
+    public function testGetPizzaPiecesPerPerson() : void
     {
         $this->expectException(LogicException::class);
         $this->SUT->getPizzaPiecesPerPerson(10);
 
         $this->SUT->calculate(10000);
-        $this->assertEquals(2.4, $this->SUT->getPizzaPiecesPerPerson(10));
+        $this->assertSame(2.4, $this->SUT->getPizzaPiecesPerPerson(10));
     }
 
-    public function testGetDrinksNumPerPerson()
+    public function testGetDrinksNumPerPerson() : void
     {
         $this->expectException(LogicException::class);
         $this->SUT->getPizzaPiecesPerPerson(10);
 
         $this->SUT->calculate(10000);
-        $this->assertEquals(1.23, $this->SUT->getPizzaPiecesPerPerson(10));
+        $this->assertSame(1.23, $this->SUT->getPizzaPiecesPerPerson(10));
     }
 }

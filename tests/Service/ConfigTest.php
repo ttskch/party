@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Ttskch\Party\Service;
@@ -15,18 +16,18 @@ class ConfigTest extends TestCase
      */
     protected $SUT;
 
-    protected function setUp(): void
+    protected function setUp() : void
     {
         $this->SUT = new Config(__DIR__ . '/../fixture/config.test.yaml');
     }
 
-    public function testGetPurchaseRates()
+    public function testGetPurchaseRates() : void
     {
-        $rates =$this->SUT->getPurchaseRates();
+        $rates = $this->SUT->getPurchaseRates();
 
-        $this->assertEquals(1, $rates['pizza']);
-        $this->assertEquals(1.9798561151079, $rates['beer']);
-        $this->assertEquals(0.98992805755396, $rates['other_alcohol']);
-        $this->assertEquals(0.23021582733813, $rates['non_alcohol']);
+        $this->assertSame(1, $rates['pizza']);
+        $this->assertSame(1.9798561151079, $rates['beer']);
+        $this->assertSame(0.98992805755396, $rates['other_alcohol']);
+        $this->assertSame(0.23021582733813, $rates['non_alcohol']);
     }
 }

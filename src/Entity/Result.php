@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Ttskch\Party\Entity;
@@ -45,7 +46,7 @@ class Result
      */
     public $nonAlcoholPrice;
 
-    public function getTotalPrice(): float
+    public function getTotalPrice() : float
     {
         return $this->pizzaPrice + $this->beerPrice + $this->otherAlcoholPrice + $this->nonAlcoholPrice;
     }
