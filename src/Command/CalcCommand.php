@@ -56,8 +56,8 @@ class CalcCommand extends Command
                 ['Cans of other alcohol', $result->otherAlcoholNum, $result->otherAlcoholPrice],
                 ['Bottles of non-alcohol (1.5L)', $result->nonAlcoholNum, $result->nonAlcoholPrice],
                 new TableSeparator(),
-                ['Total', '-', $totalPrice = $result->totalPrice],
-                ['Average', '-', ceil($result->totalPrice / $headcount)],
+                ['Total', '-', $totalPrice = $result->getTotalPrice()],
+                ['Average', '-', ceil($result->getTotalPrice() / $headcount)],
             ])
             ->render()
         ;

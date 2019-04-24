@@ -45,10 +45,8 @@ class Result
      */
     public $nonAlcoholPrice;
 
-    public function __get($name)
+    public function getTotalPrice(): float
     {
-        if ($name === 'totalPrice') {
-            return $this->pizzaPrice + $this->beerPrice + $this->otherAlcoholPrice + $this->nonAlcoholPrice;
-        }
+        return $this->pizzaPrice + $this->beerPrice + $this->otherAlcoholPrice + $this->nonAlcoholPrice;
     }
 }

@@ -67,7 +67,7 @@ class Calculator
 
     private function ensureCalculated()
     {
-        if (!$this->result) {
+        if (!isset($this->result)) {
             throw new LogicException('Not calculated yet.');
         }
     }
