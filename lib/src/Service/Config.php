@@ -70,16 +70,4 @@ class Config
             'non_alcohol' => $nonAlcoholPurchaseRate,
         ];
     }
-
-    public static function createDefaultConfigFile() : void
-    {
-        @mkdir(dirname($path = $_SERVER['HOME'] . self::USER_CONFIG_FILE_PATH_UNDER_HOME_DIR), 0644, true);
-
-        if (file_exists($path)) {
-            echo sprintf('"%s" is already existent. Modify it if you need.', $path) . PHP_EOL;
-        } else {
-            copy(__DIR__ . '/../../config/config.yaml.dist', $path);
-            echo sprintf('"%s" is created. Modify it if you need.', $path) . PHP_EOL;
-        }
-    }
 }
