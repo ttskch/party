@@ -1,5 +1,7 @@
 # party
 
+[![Build Status](https://travis-ci.com/ttskch/party.svg?branch=master)](https://travis-ci.com/ttskch/party)
+
 CLI command to calculate amounts of pizzas and drinks for a party.
 
 ## Installation
