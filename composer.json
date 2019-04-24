@@ -22,40 +22,40 @@
     },
     "autoload": {
         "psr-4": {
-            "Ttskch\\Party\\": "src/"
+            "Ttskch\\Party\\": "lib/src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
             "Ttskch\\Party\\": [
-                "tests/",
-                "tests/Fake"
+                "lib/tests/",
+                "lib/tests/Fake"
             ]
         }
     },
     "scripts": {
         "test": [
-            "vendor/bin/phpunit"
+            "lib/vendor/bin/phpunit"
         ],
         "tests": [
             "@cs",
-            "vendor/bin/phpmd src,tests text ./phpmd.xml",
-            "vendor/bin/phpstan analyse -l max src tests -c phpstan.neon --no-progress",
+            "lib/vendor/bin/phpmd lib/src,lib/tests text ./phpmd.xml",
+            "lib/vendor/bin/phpstan analyse -l max lib/src lib/tests -c phpstan.neon --no-progress",
             "@test"
         ],
         "coverage": [
-            "php -dzend_extension=xdebug.so ./vendor/bin/phpunit --coverage-text --coverage-html=build/coverage"
+            "php -dzend_extension=xdebug.so ./lib/vendor/bin/phpunit --coverage-text --coverage-html=build/coverage"
         ],
         "cs": [
-            "vendor/bin/php-cs-fixer fix -v --dry-run",
-            "vendor/bin/phpcs --standard=phpcs.xml src;"
+            "lib/vendor/bin/php-cs-fixer fix -v --dry-run",
+            "lib/vendor/bin/phpcs --standard=phpcs.xml lib/src;"
         ],
         "cs-fix": [
-            "vendor/bin/php-cs-fixer fix -v",
-            "vendor/bin/phpcbf src tests"
-        ],
-        "post-install-cmd": [
-            "Ttskch\\Party\\Service\\Config::createDefaultConfigFile"
+            "lib/vendor/bin/php-cs-fixer fix -v",
+            "lib/vendor/bin/phpcbf lib/src lib/tests"
         ]
+    },
+    "config": {
+        "vendor-dir": "lib/vendor"
     }
 }

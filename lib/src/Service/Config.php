@@ -11,7 +11,9 @@ use Symfony\Component\Yaml\Yaml;
  */
 class Config
 {
-    const DEFAULT_CONFIG_FILE_PATH_UNDER_HOME_DIR = '/.config/party/config.yaml';
+    const DEFAULT_CONFIG_FILE_PATH = __DIR__ . '/../../config/config.yaml.dist';
+
+    const USER_CONFIG_FILE_PATH_UNDER_HOME_DIR = '/.config/party/config.yaml';
 
     const PIZZA_PIECES = 8;
 
@@ -32,7 +34,12 @@ class Config
 
     public function __construct(string $configFilePath = null)
     {
-        $this->configFilePath = $configFilePath ?: $_SERVER['HOME'] . self::DEFAULT_CONFIG_FILE_PATH_UNDER_HOME_DIR;
+        $configFilePath = $configFilePath ?: $_SERVER['HOME'] . self::USER_CONFIG_FILE_PATH_UNDER_HOME_DIR;
+        if (! file_exists($configFilePath)) {
+            $configFilePath = self::DEFAULT_CONFIG_FILE_PATH;
+        }
+        $this->configFilePath = $configFilePath;
+
         $this->config = Yaml::parseFile($this->configFilePath);
         $this->unitPrices = Yaml::parseFile(__DIR__ . "/../../config/unit_prices/{$this->config['currency']}.yaml");
     }
@@ -66,7 +73,7 @@ class Config
 
     public static function createDefaultConfigFile() : void
     {
-        @mkdir(dirname($path = $_SERVER['HOME'] . self::DEFAULT_CONFIG_FILE_PATH_UNDER_HOME_DIR), 0644, true);
+        @mkdir(dirname($path = $_SERVER['HOME'] . self::USER_CONFIG_FILE_PATH_UNDER_HOME_DIR), 0644, true);
 
         if (file_exists($path)) {
             echo sprintf('"%s" is already existent. Modify it if you need.', $path) . PHP_EOL;

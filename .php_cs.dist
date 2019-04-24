@@ -10,7 +10,7 @@ $header = <<<'EOF'
 EOF;
 
 $finder = PhpCsFixer\Finder::create()
-    ->exclude(['tests/Fake', 'tests/tmp', 'template'])
+    ->exclude(['lib/tests/Fake', 'lib/tests/tmp', 'template'])
     ->in(__DIR__);
 
 return \PhpCsFixer\Config::create()

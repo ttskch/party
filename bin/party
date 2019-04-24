@@ -1,5 +1,5 @@
 #!/usr/bin/env php
 <?php
-require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/../lib/vendor/autoload.php';
 
 (new Ttskch\Party\Party())->run();
